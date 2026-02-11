@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Komal!</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Playfair Display', serif;
+    background:#2c2c34;
+    color:#ffd700;
+    overflow-x:hidden;
+    scroll-behavior:smooth;
+    padding-bottom:60px; /* space for fixed footer */
+  }
+  section{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    position:relative;
+    padding:50px 20px;
+  }
+  h1{
+    font-size:4rem; 
+    font-family:'Great Vibes', cursive; 
+    margin-bottom:0.5rem;
+    background: linear-gradient(90deg, #ffd700, #8000ff, #ffd700);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 3s ease infinite;
+  }
+  p{font-size:1.2rem; max-width:600px; line-height:1.6; margin-bottom:2rem; color:#ffd700cc;}
+  .btn{padding:12px 25px;border-radius:25px;border:none;background:#ffd700;color:#2c2c34;font-weight:600;cursor:pointer;transition:0.3s;margin:5px;}
+  .btn:hover{background:#e6c200; transform:scale(1.05);}
+  input[type=text]{padding:10px 15px; border-radius:15px; border:none; outline:none; width:250px; text-align:center; margin-bottom:15px;}
+  .gallery img{border-radius:15px;transition:0.3s;}
+  .gallery img:hover{transform:scale(1.1);}
+  #timer{font-size:2rem; margin-top:15px;}
+  /* Balloons */
+  .balloon{
+    position:absolute;
+    border-radius:50%;
+    width:80px;
+    height:100px;
+    bottom:-120px;
+    animation: floatUp linear infinite;
+  }
+  .balloon::after{
+    content:''; position:absolute;
+    width:2px; height:50px; background:#fff; bottom:-50px; left:50%; transform:translateX(-50%);
+  }
+  @keyframes floatUp{0%{transform:translateY(0);}100%{transform:translateY(-800px);}}
+  /* Confetti */
+  .confetti{
+    position:absolute;
+    width:8px; height:8px; border-radius:50%;
+    top:0; opacity:0.8;
+  }
+  /* Stars */
+  .star{
+    position:absolute; width:3px; height:3px; background:gold; border-radius:50%; opacity:0.8;
+    animation: twinkle 2s infinite alternate;
+  }
+  @keyframes twinkle{ from{opacity:0.3;} to{opacity:1;} }
+  @keyframes gradient{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+  /* Footer */
+  footer{
+    width:100%; text-align:center; padding:15px 0; background:#1f1f27; position:fixed; bottom:0; left:0; z-index:1000;
+  }
+  footer p{font-family:'Great Vibes', cursive; font-size:1.8rem; color:#ffd700; letter-spacing:2px;}
+  /* Navigation */
+  .nav{position:fixed; top:10px; right:10px; z-index:1000; display:flex; gap:10px; flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<!-- Navigation Buttons -->
+<div class="nav">
+  <button class="btn" onclick="scrollToSection('home')">Home</button>
+  <button class="btn" onclick="scrollToSection('wishSection')">Make a Wish</button>
+  <button class="btn" onclick="scrollToSection('celebrateSection')">Celebrate</button>
+  <button class="btn" onclick="scrollToSection('messagesSection')">Messages</button>
+  <button class="btn" onclick="scrollToSection('musicSection')">Music</button>
+</div>
+
+<!-- Home Section -->
+<section id="home">
+  <h1>Happy Birthday Komal! 🎉</h1>
+</section>
+
+<!-- Make a Wish Section -->
+<section id="wishSection">
+  <h1>Make a Wish ✨</h1>
+  <p>Type your wish and let the magic stars make it come true 🌟</p>
+  <input type="text" id="wishInput" placeholder="Your wish...">
+  <button class="btn" onclick="submitWish()">✨ Send Wish</button>
+</section>
+
+<!-- Celebrate Section -->
+<section id="celebrateSection">
+  <h1>Let's Celebrate 🎉</h1>
+  <p>Enjoy the balloons, confetti, and happiness around you!</p>
+  <div id="confettiContainer"></div>
+  <p style="margin-top:20px; font-size:1.2rem;">🎇 Enjoy the celebration! 🎇</p>
+</section>
+
+
+<!-- Messages Section -->
+<section id="messagesSection">
+  <h1>Leave a Message 💌</h1>
+  <input type="text" id="msgInput" placeholder="Your message...">
+  <button class="btn" onclick="addMessage()">Send</button>
+  <div id="messagesBox" style="margin-top:20px;"></div>
+</section>
+
+
+<!-- Music Section -->
+<section id="musicSection">
+  <h1>Birthday Tunes 🎵</h1>
+  <p>Click play and enjoy! 🎉</p>
+
+  <audio controls autoplay loop>
+    <source src="happybirthday.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>✨ By Komal ✨</p>
+</footer>
+
+<script>
+// Scroll function
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth'});}
+
+// Confetti
+for(let i=0;i<50;i++){
+  const c=document.createElement('div');
+  c.classList.add('confetti');
+  c.style.left=Math.random()*window.innerWidth+'px';
+  c.style.width=c.style.height=(Math.random()*6+4)+'px';
+  c.style.background=Math.random()<0.5?'#ffd700':'#8000ff';
+  c.style.animationDuration=(2+Math.random()*3)+'s';
+  document.getElementById('confettiContainer').appendChild(c);
+}
+const confetti = document.querySelectorAll('.confetti');
+function animateConfetti(){
+  confetti.forEach(c=>{
+    let y=parseFloat(c.style.top)||0;
+    let x=parseFloat(c.style.left);
+    y+=1+Math.random()*2;
+    x+=Math.random()*1-0.5;
+    if(y>window.innerHeight){y=0; x=Math.random()*window.innerWidth;}
+    c.style.top=y+'px';
+    c.style.left=x+'px';
+  });
+  requestAnimationFrame(animateConfetti);
+}
+animateConfetti();
+
+// Stars
+for(let i=0;i<100;i++){
+  const star=document.createElement('div');
+  star.classList.add('star');
+  star.style.top=Math.random()*window.innerHeight+'px';
+  star.style.left=Math.random()*window.innerWidth+'px';
+  document.body.appendChild(star);
+}
+
+// Wish function
+function firework(x, y){
+  for(let i=0; i<20; i++){
+    const f = document.createElement('div');
+    f.className = 'confetti';
+    f.style.left = x + 'px';
+    f.style.top = y + 'px';
+    f.style.width = f.style.height = (Math.random()*6+4)+'px';
+    f.style.background = Math.random()<0.5?'#ffd700':'#8000ff';
+    document.body.appendChild(f);
+    setTimeout(()=> f.remove(), 2000);
+  }
+}
+function submitWish(){
+  const wish=document.getElementById('wishInput').value;
+  if(wish.trim()!==''){
+    const rect = document.getElementById('wishInput').getBoundingClientRect();
+    firework(rect.left + rect.width/2, rect.top);
+    alert('Your wish has been sent to the stars! 🌟\nWish: '+wish);
+    document.getElementById('wishInput').value='';
+  } else alert('Please type a wish first ✨');
+}
+
+// Messages
+function addMessage(){
+  const msg=document.getElementById('msgInput').value;
+  if(msg.trim()!==''){
+    const div=document.createElement('div');
+    div.textContent = "💛 " + msg;
+    div.style.margin = "5px 0";
+    div.style.color="#ffd700";
+    document.getElementById('messagesBox').appendChild(div);
+    document.getElementById('msgInput').value='';
+  } else alert("Type a message first!");
+}
+
+</script>
+
+</body>
+</html>
